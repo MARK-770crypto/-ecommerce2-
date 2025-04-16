@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SuitMe Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    * { margin: 0; padding: 0; font-family: sans-serif; box-sizing: border-box; }
+    body { scroll-behavior: smooth; }
+
+
+    .navbar {
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background-color: #f3f4f6;
+      box-shadow: 0 0 14px rgba(0,0,0,0.1);
+    }
+
+
+    .navbar .logo h1 {
+      color: #424144;
+      border-bottom: 4px solid #fd6561;
+    }
+
+
+    .search {
+      padding: 10px 25px;
+      font-size: larger;
+      border-radius: 20px;  
+      background-color: #f63e4e;
+      color: #000;
+      border: none;
+    }
+
+
+    ::placeholder { color: #000; }
+
+
+    .navbar .menu {
+      display: flex;
+      list-style: none;
+    }
+
+
+    .navbar .menu li {
+      position: relative;
+      margin-left: 20px;
+    }
+
+
+    .navbar .menu li a {
+      display: block;
+      color: #424144;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 4px solid transparent;
+    }
+
+
+    .navbar .menu li a:hover,
+    .navbar .menu li a.active {
+      border-bottom: 4px solid #f63e4e;
+    }
+
+
+    .navbar .menu li a i {
+      color: #f63e4e;
+    }
+
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #fff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      min-width: 200px;
+      z-index: 1000;
+    }
+
+
+    .navbar .menu li:hover .dropdown {
+      display: block;
+    }
+
+
+    .dropdown li a {
+      padding: 10px;
+      display: block;
+      color: #424144;
+      text-decoration: none;
+      font-weight: normal;
+    }
+
+
+    .dropdown li a:hover {
+      background-color: #f63e4e;
+      color: white;
+    }
+
+
+    .content {
+      background-image: url(bagggg.png);
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding: 0 5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      color: #424144;
+      height: 100vh;
+    }
+
+
+    .content h1 {
+      font-size: 40px;
+      color: #000;
+    }
+
+
+    .content p {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #000;
+    }
+
+
+    .content button {
+      margin-top: 30px;
+      padding: 15px 30px;
+      border: none;
+      background-color: red;
+      color: white;
+      border-radius: 5px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+
+    .content button:hover {
+      background-color: white;
+      color: #f63e4e;
+    }
+
+
+    .pheading {
+      text-align: center;
+      margin: 50px 0;
+      color: #424144;
+    }
+
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 0 5% 50px;
+    }
+
+
+    .card {
+      position: relative;
+      background: #f5f5f5;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+
+    .desc {
+      padding: 5px 10px;
+      opacity: 0.8;
+    }
+
+
+    .title {
+      font-weight: bold;
+      font-size: 18px;
+      color: #424144;
+      padding: 0 10px;
+    }
+
+
+    .box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+
+
+    .price {
+      color: #f63e4e;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+
+    .btn {
+      padding: 8px 16px;
+      border: 1px solid #f63e4e;
+      color: #f63e4e;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+
+    .btn:hover {
+      background-color: #f63e4e;
+      color: #fff;
+    }
+
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+
+    .description-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.97);
+      display: none;
+      padding: 20px;
+      z-index: 5;
+    }
+
+
+    input[type="checkbox"]:checked + .description-overlay {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+
+    .description-popup {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+
+    .description-popup label {
+      font-weight: bold;
+    }
+
+
+    .description-popup select,
+    .description-popup input[type="number"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+
+    .popup-buttons {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+
+    .action-btn {
+      padding: 10px 16px;
+      background-color: #f63e4e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+
+    .action-btn:hover {
+      background-color: #424144;
+    }
+
+
+    .cancel-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #f63e4e;
+      color: #f63e4e;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      width: fit-content;
+    }
+
+
+    .cancel-btn:hover {
+      background-color: #f63e4e;
+      color: white;
+    }
+
+
+    .products .card {
+      width: 200px;
+      background: #f5f5f5;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border-radius: 5px;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+
+
+    .products .card img {
+      height: 200px;
+      width: 100%;
+    }
+
+
+    .products .card .desc {
+      padding: 5px 20px;
+      opacity: 0.8;
+    }
+
+
+    .products .card .title {
+      font-weight: 900;
+      font-size: 20px;
+      color: #424144;
+      padding: 0 20px;
+    }
+
+
+    .products .card .box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+
+    .products .card .box .price {
+      color: #f63e4e;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+
+    .products .card .box .btn {
+      font-size: 13px;
+      color: #f63e4e;
+      padding: 10px 18px;
+      font-weight: 900;
+      border: 1px solid #f63e4e;
+      border-radius: 20px;
+      transition: 0.19s;
+    }
+    /* Navbar Styles */
+.navbar {
+  padding: 20px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #f3f4f6;
+  box-shadow: 0 0 14px rgba(0,0,0,0.1);
+}
+
+
+.navbar .logo h1 {
+  color: #424144;
+  border-bottom: 4px solid #fd6561;
+}
+
+
+.search {
+  padding: 10px 25px;
+  font-size: larger;
+  border-radius: 20px;
+  background-color: #f63e4e;
+  color: #000;
+  border: none;
+}
+
+
+::placeholder {
+  color: #000;
+}
+
+
+.navbar .menu {
+  display: flex;
+  list-style: none;
+}
+
+
+.navbar .menu li {
+  position: relative;
+  margin-left: 20px;
+}
+
+
+.navbar .menu li a {
+  display: block;
+  color: #424144;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 4px solid transparent;
+}
+
+
+.navbar .menu li a:hover,
+.navbar .menu li a.active {
+  border-bottom: 4px solid #f63e4e;
+}
+
+
+.navbar .menu li a i {
+  color: #f63e4e;
+}
+
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  min-width: 200px;
+  z-index: 1000;
+}
+
+
+.navbar .menu li:hover .dropdown {
+  display: block;
+}
+
+
+.dropdown li a {
+  padding: 10px;
+  display: block;
+  color: #424144;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+
+.dropdown li a:hover {
+  background-color: #f63e4e;
+  color: white;
+}
+
+
+  </style>
+</head>
+<body>
+
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><a href="#home"><h1>SuitMe</h1></a></div>
+    <input type="text" placeholder="Search.." class="search">
+    <ul class="menu">
+      <li class="categories">
+        <a href="#">Categories ►</a>
+        <ul class="dropdown">
+          <li><a href="#tshirts">T-shirts</a></li>
+          <li><a href="#dress">Dress</a></li>
+          <li><a href="#shoes">Shoes</a></li>
+         
+        </ul>
+      </li>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#cart"><i class="fas fa-shopping-cart"></i></a></li>
+    </ul>
+  </nav>
+
+
+  <!-- Hero Section -->
+  <section class="content" id="home">
+    <h1>Style for Every Story</h1>
+    <p>— Shop the Latest in Men's & Women's Fashion</p>
+    <button><a href="#products">Shop Now</a></button>
+  </section>
+
+
+  <!-- Products -->
+  <h1 class="pheading" id="products">Our Latest Products</h1>
+  <section class="products">
+    <!-- Product Card 1 -->
+    <div class="card">
+      <img src="men1.avif" alt="Product Image">
+      <div class="desc">Men</div>
+      <div class="title">Korean Sports Loose Tee</div>
+      <div class="box">
+        <div class="price">$60</div>
+        <label for="product1" class="btn">Buy Now</label>
+      </div>
+
+
+      <input type="checkbox" id="product1">
+      <div class="description-overlay">
+        <div class="description-popup">
+          <label for="size">Size:</label>
+          <select id="size">
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+          </select>
+
+
+          <label for="color">Color:</label>
+          <select id="color">
+            <option>Black</option>
+            <option>White</option>
+            <option>Gray</option>
+          </select>
+
+
+          <label for="qty">Quantity:</label>
+          <input type="number" id="qty" min="1" value="1">
+
+
+          <div class="popup-buttons">
+            <button class="action-btn">Add to Cart</button>
+            <button class="action-btn">Buy</button>
+          </div>
+
+
+          <label for="product1" class="cancel-btn">Cancel</label>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Product Card 2 -->
+    <div class="card">
+      <img src="men2.avif" alt="Product Image">
+      <div class="desc">Men</div>
+      <div class="title">Korean Running Shoes</div>
+      <div class="box">
+        <div class="price">$60</div>
+        <label for="product2" class="btn">Buy Now</label>
+      </div>
+
+
+      <input type="checkbox" id="product2">
+      <div class="description-overlay">
+        <div class="description-popup">
+          <label for="size">Size:</label>
+          <select id="size">
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+          </select>
+
+
+          <label for="color">Color:</label>
+          <select id="color">
+            <option>Black</option>
+            <option>White</option>
+            <option>Gray</option>
+          </select>
+
+
+          <label for="qty">Quantity:</label>
+          <input type="number" id="qty" min="1" value="1">
+
+
+          <div class="popup-buttons">
+            <button class="action-btn">Add to Cart</button>
+            <button class="action-btn">Buy</button>
+          </div>
+
+
+          <label for="product2" class="cancel-btn">Cancel</label>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Product Card 3 -->
+    <div class="card">
+      <img src="women3.avif" alt="Product Image">
+      <div class="desc">Women</div>
+      <div class="title">Korean High Dress Double Color</div>
+      <div class="box">
+        <div class="price">$60</div>
+        <label for="product3" class="btn">Buy Now</label>
+      </div>
+
+
+      <input type="checkbox" id="product3">
+      <div class="description-overlay">
+        <div class="description-popup">
+          <label for="size">Size:</label>
+          <select id="size">
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+          </select>
+
+
+          <label for="color">Color:</label>
+          <select id="color">
+            <option>Black</option>
+            <option>White</option>
+            <option>Gray</option>
+          </select>
+
+
+          <label for="qty">Quantity:</label>
+          <input type="number" id="qty" min="1" value="1">
+
+
+          <div class="popup-buttons">
+            <button class="action-btn">Add to Cart</button>
+            <button class="action-btn">Buy</button>
+          </div>
+
+
+          <label for="product3" class="cancel-btn">Cancel</label>
+        </div>
+      </div>
+    </div>
+    <!-- Product Card 4 -->
+    <div class="card">
+        <img src="women4.avif" alt="Product Image">
+        <div class="desc">Women</div>
+        <div class="title">Korean High Dress Double Color</div>
+        <div class="box">
+          <div class="price">$60</div>
+          <label for="product4" class="btn">Buy Now</label> </div>
+ 
+        <input type="checkbox" id="product4">
+        <div class="description-overlay">
+          <div class="description-popup">
+            <label for="size">Size:</label>
+            <select id="size">
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+            </select>
+ 
+            <label for="color">Color:</label>
+            <select id="color">
+              <option>Black</option>
+              <option>White</option>
+              <option>Gray</option>
+            </select>
+ 
+            <label for="qty">Quantity:</label>
+            <input type="number" id="qty" min="1" value="1">
+ 
+            <div class="popup-buttons">
+              <button class="action-btn">Add to Cart</button>
+              <button class="action-btn">Buy</button>
+            </div>
+ 
+            <label for="product4" class="cancel-btn">Cancel</label>
+          </div>
+        </div>
+      </div>
+      <!-- Product Card 5 -->
+      <div class="card">
+        <img src="women5.avif" alt="Product Image">
+        <div class="desc">Women</div>
+        <div class="title">Korean High Dress Double Color</div>
+        <div class="box">
+          <div class="price">$60</div>
+          <label for="product5" class="btn">Buy Now</label>
+        </div>
+ 
+        <input type="checkbox" id="product5">
+        <div class="description-overlay">
+          <div class="description-popup">
+            <label for="size">Size:</label>
+            <select id="size">
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+            </select>
+ 
+            <label for="color">Color:</label>
+            <select id="color">
+              <option>Black</option>
+              <option>White</option>
+              <option>Gray</option>
+            </select>
+ 
+            <label for="qty">Quantity:</label>
+            <input type="number" id="qty" min="1" value="1">
+ 
+            <div class="popup-buttons">
+              <button class="action-btn">Add to Cart</button>
+              <button class="action-btn">Buy</button>
+            </div>
+ 
+            <label for="product5" class="cancel-btn">Cancel</label>
+          </div>
+        </div>
+      </div>
+     
+  </div>
+  </section>
+
+
+  <!-- tshirt Card 1 -->
+  <!-- T-shirts Section -->
+<!-- T-shirts Section -->
+<h1 class="pheading" id="tshirts">T-Shirts</h1>
+<section class="products">
+  <!-- T-shirt Card 1 -->
+  <div class="card">
+    <img src="tshirt1.avif" alt="T-shirt Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Vintage Washed Tee</div>
+    <div class="box">
+      <div class="price">$40</div>
+      <label for="tshirt1" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="tshirt1">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Beige</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="tshirt1" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- T-shirt Card 2 -->
+  <div class="card">
+    <img src="tshirt2.avif" alt="T-shirt Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Graphic Print Tee</div>
+    <div class="box">
+      <div class="price">$35</div>
+      <label for="tshirt2" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="tshirt2">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Blue</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="tshirt2" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- T-shirt Card 3 -->
+
+
+<div class="card">
+    <img src="tshirt3.avif" alt="T-shirt Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Graphic Print Tee</div>
+    <div class="box">
+      <div class="price">$35</div>
+      <label for="tshirt3" class="btn">Buy Now</label>
+    </div>
+ 
+    <input type="checkbox" id="tshirt3">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+ 
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Blue</option>
+        </select>
+ 
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+ 
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+ 
+        <label for="tshirt3" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- T-shirt Card 4 -->
+<div class="card">
+    <img src="tshirt4.avif" alt="T-shirt Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Graphic Print Tee</div>
+    <div class="box">
+      <div class="price">$35</div>
+      <label for="tshirt4" class="btn">Buy Now</label>
+    </div>
+ 
+    <input type="checkbox" id="tshirt4">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+ 
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Blue</option>
+        </select>
+ 
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+ 
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+ 
+        <label for="tshirt4" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- T-shirt Card 5 -->
+  <div class="card">
+    <img src="tshirt5.avif" alt="T-shirt Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Graphic Print Tee</div>
+    <div class="box">
+      <div class="price">$35</div>
+      <label for="tshirt5" class="btn">Buy Now</label>
+    </div>
+ 
+    <input type="checkbox" id="tshirt5">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+ 
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Blue</option>
+        </select>
+ 
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+ 
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+ 
+        <label for="tshirt5" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <!-- dress Section -->
+
+
+<h1 class="pheading" id="dress">Dress</h1>
+<section class="products">
+ <!-- Dress Card 1 -->
+ <div class="card">
+    <img src="dress1.avif" alt="Dress Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Vintage Washed Dress</div>
+    <div class="box">
+      <div class="price">$40</div>
+      <label for="dress1" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="dress1">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Beige</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="dress1" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Dress Card 2 -->
+  <div class="card">
+    <img src="dress2.avif" alt="Dress Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Graphic Print Dress</div>
+    <div class="box">
+      <div class="price">$35</div>
+      <label for="dress2" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="dress2">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Blue</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="dress2" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Dress Card 3 -->
+  <div class="card">
+    <img src="dress3.avif" alt="Dress Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Elegant Evening Dress</div>
+    <div class="box">
+      <div class="price">$45</div>
+      <label for="dress3" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="dress3">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Red</option>
+          <option>Green</option>
+          <option>Blue</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="dress3" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+  <!-- Dress Card 4 -->
+  <div class="card">
+    <img src="dress4.avif" alt="Dress Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Floral Summer Dress</div>
+    <div class="box">
+      <div class="price">$50</div>
+      <label for="dress4" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="dress4">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Pink</option>
+          <option>Yellow</option>
+          <option>White</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="dress4" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Dress Card 5 -->
+  <div class="card">
+    <img src="dress5.avif" alt="Dress Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Chic Office Dress</div>
+    <div class="box">
+      <div class="price">$55</div>
+      <label for="dress5" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="dress5">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">    
+          <option>Black</option>
+          <option>Navy</option>
+          <option>Gray</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="dress5" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- dress Section -->
+
+
+  <!-- Shoes Section -->
+
+
+<h1 class="pheading" id="shoes">Shoes</h1>
+<section class="products">
+  <!-- Shoes Card 1 -->
+  <div class="card">
+    <img src="shoes1.avif" alt="Shoes Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Korean Sports Shoes</div>
+    <div class="box">
+      <div class="price">$60</div>
+      <label for="shoes1" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="shoes1">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Gray</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="shoes1" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Shoes Card 2 -->
+  <div class="card">
+    <img src="shoes2.avif" alt="Shoes Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Korean Running Shoes</div>
+    <div class="box">
+      <div class="price">$60</div>
+      <label for="shoes2" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="shoes2">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Gray</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="shoes2" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+    <!-- Shoes Card 3 -->
+  <div class="card">
+    <img src="shoes3.avif" alt="Shoes Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Korean Boots Shoes</div>
+    <div class="box">
+      <div class="price">$70</div>
+      <label for="shoes3" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="shoes3">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>Brown</option>
+          <option>Gray</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+        <label for="shoes3" class="cancel-btn">Cancel</label>
+        </div>
+    </div>
+    </div>
+    <!-- Dress Card 4 -->
+    <!-- Shoes Card 4 -->
+  <div class="card">
+    <img src="shoes4.avif" alt="Shoes Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Casual Sneakers</div>
+    <div class="box">
+      <div class="price">$65</div>
+      <label for="shoes4" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="shoes4">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>White</option>
+          <option>Red</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="shoes4" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Shoes Card 5 -->
+  <div class="card">
+    <img src="shoes5.avif" alt="Shoes Image">
+    <div class="desc">Unisex</div>
+    <div class="title">Stylish Loafers</div>
+    <div class="box">
+      <div class="price">$75</div>
+      <label for="shoes5" class="btn">Buy Now</label>
+    </div>
+
+
+    <input type="checkbox" id="shoes5">
+    <div class="description-overlay">
+      <div class="description-popup">
+        <label for="size">Size:</label>
+        <select id="size">
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+
+
+        <label for="color">Color:</label>
+        <select id="color">
+          <option>Black</option>
+          <option>Brown</option>
+          <option>Beige</option>
+        </select>
+
+
+        <label for="qty">Quantity:</label>
+        <input type="number" id="qty" min="1" value="1">
+
+
+        <div class="popup-buttons">
+          <button class="action-btn">Add to Cart</button>
+          <button class="action-btn">Buy</button>
+        </div>
+
+
+        <label for="shoes5" class="cancel-btn">Cancel</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Footer Section -->
+<footer style="background-color: #424144; color: white; padding: 20px 5%; text-align: center;" id="about">
+    <div class="footer-content">
+      <h2>About Us</h2>
+      <p>At SuitMe, we believe in providing the best fashion choices for everyone. Our mission is to offer stylish and affordable clothing that fits every occasion.</p>
+     
+      <div class="footer-links" style="margin: 20px 0;">
+        <a href="#about" style="color: white; text-decoration: none; margin: 0 15px;">About</a>
+        <a href="#products" style="color: white; text-decoration: none; margin: 0 15px;">Products</a>
+        <a href="#contact" style="color: white; text-decoration: none; margin: 0 15px;">Contact</a>
+        <a href="#privacy" style="color: white; text-decoration: none; margin: 0 15px;">Privacy Policy</a>
+      </div>
+ 
+      <div class="social-media" style="margin: 20px 0;">
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+ 
+    <div class="footer-bottom" style="margin-top: 20px;">
+      <p>&copy; 2025 SuitMe Store. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>
+
+
+
